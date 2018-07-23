@@ -36,6 +36,7 @@ Tested under GHC 8.0.1, should run under 7.8 and newer.
 - Union (`\/`)
 - Intersection (`/\`)
 - Difference (`-`)
+- **To be implemented** Division
 
 #### Joins
 
