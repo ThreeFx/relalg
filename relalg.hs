@@ -39,6 +39,7 @@ project names (Table header body) = case body of
     where
       newCols = transpose $ map (transpose body !!) indices
       indices = map (fromJust . flip elemIndex header) names
+pi = project
 
 get :: String -> [(String, Obj)] -> Obj
 get name = snd . head . filter ((==name) . fst)

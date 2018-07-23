@@ -12,7 +12,7 @@ Tested under GHC 8.0.1, should run under 7.8 and newer.
 
 #### Basics
 
-- Projection (`project`)
+- Projection (`pi`)
 - Renaming (`rho`)
   - expects a list of tuples `[(oldname, newname)]`
 - Selection (`sigma`)
