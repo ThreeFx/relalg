@@ -115,9 +115,15 @@ infixl 4 =|><|
 (=|><|) = leftjoin
 
 rightjoin :: Table -> Table -> Table
-rightjoin t s = leftjoin s t
+--rightjoin t s = (t |><| s) \/ (nulltable (sort $ h t \\ h s)) * (s - (project (h s) (t |><| s)))
+rightjoin = flip leftjoin
 infixl 4 |><|=
 (|><|=) = rightjoin
+
+outerjoin :: Table -> Table -> Table
+outerjoin t1 t2 = t1 =|><| t2 \/ t1 |><|= t2
+infixl 4 =|><|=
+(=|><|=) = outerjoin
 
 cities = Table ["Name", "State"]
               [[S "Zurich",  S "ZH"]
@@ -125,7 +131,7 @@ cities = Table ["Name", "State"]
               ,[S "Locarno", S "TI"]
               ,[S "Geneva",  S "GE"]]
 
-cities2 = Table ["Name", "State"]
+cities2 = Table ["CityName", "State"]
               [[S "Zurich",  S "ZH"]
               ,[S "Chur",  S "GR"]]
 
@@ -134,6 +140,10 @@ stations = Table ["Name", "NoPlatforms", "CityName", "State"]
                 ,[S "Bern Bf",    I 1,  S "Bern",    S "BE"]
                 ,[S "Locarno Bf", I 2,  S "Locarno", S "TI"]
                 ,[S "Geneva Bf",  I 10, S "Geneva",  S "GE"]]
+
+stations2 = Table ["Name", "NoPlatforms", "CityName", "State"]
+                [[S "HB",   I 44, S "Zurich",  S "ZH"]
+                ,[S "HB2",  I 10, S "Basel",   S "BA"]]
 
 itinerary = Table ["ItNr", "Length", "StartStation", "DestinationStation"]
                  [[I 1, I 2, S "HB",        S "Geneva Bf"]
@@ -150,7 +160,3 @@ connections = Table ["FromStation", "ToStation", "ItNr", "Departure", "Arrival"]
                    ,[S "Bern Bf",   S "Geneva Bf" , I 4, I 1, I 1]
                    ,[S "HB",        S "Locarno Bf", I 5, I 1, I 1]
                    ,[S "Geneva Bf", S "Locarno Bf", I 6, I 1, I 1]]
-
-t = rrho "Name" "CityName" cities
-t2 = rrho "Name" "CityName" cities2
-s = stations
