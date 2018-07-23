@@ -14,8 +14,14 @@ It doesn't depend on external Haskell libraries, run it as 'ghci relalg.hs'
 - Projection (`project`)
 - Renaming (`rho`)
   - expects a list of tuples `[(oldname, newname)]`
-- Selection (`select`)
-  - currently has a _very_ complicated interface, I'll fix this
+- Selection (`sigma`)
+  - offers helper functions
+    - `gs column`: "get column as string"
+    - `gi column`: "get column as int"
+    - `gd column`: "get column as double"
+  - best written as: select (\row -> gi "Age" row > 15)
+
+**`select` is for internal use only**
 
 #### Algebra
 
