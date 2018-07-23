@@ -99,7 +99,7 @@ equijoin names t1 t2 = pack $ join (\header body -> all (\x -> all (head x==) x)
 
 naturaljoin :: Table -> Table -> Table
 naturaljoin t1 t2 = equijoin (intersect (getHeader t1) (getHeader t2)) t1 t2
-infixl 4 |><|
+infixl 5 |><|
 (|><|) = naturaljoin
 
 -- | sub: outer joins
@@ -111,18 +111,18 @@ nulltable l = Table l [map (const Null) l]
 
 leftjoin :: Table -> Table -> Table
 leftjoin t s = (t |><| s) \/ (t - (project (h t) (t |><| s))) * (nulltable (sort $ h s \\ h t))
-infixl 4 =|><|
+infixl 5 =|><|
 (=|><|) = leftjoin
 
 rightjoin :: Table -> Table -> Table
 --rightjoin t s = (t |><| s) \/ (nulltable (sort $ h t \\ h s)) * (s - (project (h s) (t |><| s)))
 rightjoin = flip leftjoin
-infixl 4 |><|=
+infixl 5 |><|=
 (|><|=) = rightjoin
 
 outerjoin :: Table -> Table -> Table
 outerjoin t1 t2 = t1 =|><| t2 \/ t1 |><|= t2
-infixl 4 =|><|=
+infixl 5 =|><|=
 (=|><|=) = outerjoin
 
 cities = Table ["Name", "State"]
