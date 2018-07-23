@@ -20,7 +20,7 @@ Tested under GHC 8.0.1, should run under 7.8 and newer.
     - `gs colname row`: "get value of colname as string"
     - `gi colname row`: "get value of colname as int"
     - `gd colname row`: "get value of colname as double"
-  - best written as: select (\row -> gi "Age" row > 15)
+  - best written as: `sigma (\row -> gi "Age" row > 15)`
 
 **`select` is for internal use only**
 
