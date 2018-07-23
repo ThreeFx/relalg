@@ -17,9 +17,9 @@ Tested under GHC 8.0.1, should run under 7.8 and newer.
   - expects a list of tuples `[(oldname, newname)]`
 - Selection (`sigma`)
   - offers helper functions
-    - `gs column`: "get column as string"
-    - `gi column`: "get column as int"
-    - `gd column`: "get column as double"
+    - `gs colname row`: "get value of colname as string"
+    - `gi colname row`: "get value of colname as int"
+    - `gd colname row`: "get value of colname as double"
   - best written as: select (\row -> gi "Age" row > 15)
 
 **`select` is for internal use only**
