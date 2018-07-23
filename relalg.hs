@@ -106,7 +106,7 @@ infixr 9 .:
 
 cross :: Table -> Table -> Table
 cross (Table h1 b1) (Table h2 b2) = Table (h1 ++ h2) $ (++) <$> b1 <*> b2
-infixl 5 *
+infixl 6 *
 (*) = cross
 
 join :: ([String] -> [Obj] -> Bool) -> Table -> Table -> Table
