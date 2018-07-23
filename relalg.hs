@@ -14,6 +14,13 @@ data Obj = S String
          | Null
          deriving (Show, Eq)
 
+getS (S s) = s
+getS x = error $ "Type error: Not a string: " ++ show x
+getI (I i) = i
+getI x = error $ "Type error: Not an integer: " ++ show x
+getD (D d) = d
+getD x = error $ "Type error: Not a double: " ++ show x
+
 data Table = Table
              { getHeader :: [String]
              , getBody   :: [[Obj]]
@@ -32,6 +39,16 @@ project names (Table header body) = case body of
     where
       newCols = transpose $ map (transpose body !!) indices
       indices = map (fromJust . flip elemIndex header) names
+
+get :: String -> [(String, Obj)] -> Obj
+get name = snd . head . filter ((==name) . fst)
+
+gs n = getS . get n
+gi n = getI . get n
+gd n = getD . get n
+
+sigma :: ([(String, Obj)] -> Bool) -> Table -> Table
+sigma f (Table header body) = Table header $ filter (f . zip header) body
 
 select :: ([String] -> [Obj] -> Bool) -> Table -> Table
 select f (Table header body) = Table header $ filter (f header) body
