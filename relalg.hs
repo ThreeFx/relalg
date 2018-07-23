@@ -6,7 +6,7 @@ import Data.Function (on)
 import Data.List (elemIndex, elemIndices, intersect, nub, transpose, (\\), sort)
 import Data.Maybe (fromJust)
 
-import Prelude hiding (join, (-), (*))
+import Prelude hiding (join, (-), (*), (/), div)
 
 import qualified Prelude
 
@@ -94,11 +94,23 @@ infixl 4 /\
 
 sub :: Table -> Table -> Table
 sub t1 t2
-  | not $ same t1 t2 = error "Cannot subtract different tables"
+  | not $ same t1 t2 = error $ "Cannot subtract different tables: " ++ show (h t1) ++ " and " ++ show (h t2)
   | otherwise = let Table h1 b1 = pack t1
                     Table h2 b2 = pack t2
                  in Table h1 $ b1 \\ b2
+infixl 5 -
 (-) = sub
+
+div :: Table -> Table -> Table
+div s t
+  | not $ all (\x -> elem x (h s)) $ h t = error $ "Cannot divide " ++ show (h s) ++ " by " ++ show (h t)
+  | otherwise = t1 - t2
+  where
+    otherCols = h s \\ h t
+    t1 = project otherCols s
+    t2 = project otherCols (t * t1 - s)
+infixl 6 /
+(/) = div
 
 -- | Joins
 infixr 9 .:
@@ -194,3 +206,22 @@ connections = Table ["FromStation", "ToStation", "ItNr", "Departure", "Arrival"]
                    ,[S "Bern Bf",   S "Geneva Bf" , I 4, I 1, I 1]
                    ,[S "HB",        S "Locarno Bf", I 5, I 1, I 1]
                    ,[S "Geneva Bf", S "Locarno Bf", I 6, I 1, I 1]]
+
+proj = Table ["Name", "Project"]
+            [[S "Ben",    S "DMDB"]
+            ,[S "Robin",  S "DMDB"]
+            ,[S "Nicole", S "DMDB"]
+            ,[S "Oli",    S "DMDB"]
+            ,[S "Yann",   S "DMDB"]
+            ,[S "Robin",  S "FMFP"]
+            ,[S "Oli",    S "FMFP"]
+            ,[S "Nicole", S "FMFP"]
+            ,[S "Robin",  S "CN"]
+            ,[S "Oli",    S "CN"]
+            ,[S "Yann",   S "CN"]
+            ,[S "Ben",    S "CN"]]
+
+fmfpcn = Table ["Project"] [[S "FMFP"], [S "CN"]]
+dmdbfmfp = Table ["Project"] [[S "DMDB"], [S "FMFP"]]
+dmdbcn = Table ["Project"] [[S "DMDB"], [S "CN"]]
+dmdbfmfpcn = Table ["Project"] [[S "DMDB"], [S "FMFP"], [S "CN"]]
