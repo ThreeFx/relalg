@@ -8,6 +8,8 @@ import Data.Maybe (fromJust)
 
 import Prelude hiding (join, (-), (*))
 
+import qualified Prelude
+
 data Obj = S String
          | I Int
          | D Double
@@ -43,7 +45,6 @@ pi = project
 
 get :: String -> [(String, Obj)] -> Obj
 get name = snd . head . filter ((==name) . fst)
-
 gs n = getS . get n
 gi n = getI . get n
 gd n = getD . get n
@@ -142,6 +143,21 @@ outerjoin :: Table -> Table -> Table
 outerjoin t1 t2 = t1 =|><| t2 \/ t1 |><|= t2
 infixl 5 =|><|=
 (=|><|=) = outerjoin
+
+-- | Printing
+pt = putStrLn . st
+st :: Table -> String
+st (Table header body) = sh lens header ++ "\n" ++ replicate (sum lens + 3 Prelude.* length lens + 1) '-' ++ "\n" ++ sb lens body
+  where
+    lens = zipWith max (map length header) $ map (maximum . map (length . s)) $ transpose body
+sh lens header = ('|' :) $ concat $ zipWith (\l s -> " " ++ fill l s ++ " |") lens header
+sb lens body = unlines $ map ('|' :) . map (\row -> concat $ zipWith (\l v -> " " ++ fill l (s v) ++ " |") lens row) $ body
+fill :: Int -> String -> String
+fill l s = s ++ replicate (l Prelude.- length s) ' '
+s (S s) = s
+s (I i) = show i
+s (D d) = show d
+s Null = "NULL"
 
 cities = Table ["Name", "State"]
               [[S "Zurich",  S "ZH"]

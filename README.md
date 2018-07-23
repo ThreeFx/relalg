@@ -10,6 +10,13 @@ Tested under GHC 8.0.1, should run under 7.8 and newer.
 
 ### Supported Operations
 
+#### Printing
+
+- Print table (`pt`)
+  - pretty prints a table
+- Show table (`st`)
+  - convert a table to a string
+
 #### Basics
 
 - Projection (`pi`)
