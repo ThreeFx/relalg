@@ -1,11 +1,12 @@
 # threefx/relalg
 
-A relational algebra tester for the DMDB course.
+A relational algebra engine for the DMDB course.
 
 This project originates from 11th grade, where I wrote the basic version of
 this interpreter for testing purposes.
 
-It doesn't depend on external Haskell libraries, run it as 'ghci relalg.hs'
+It doesn't depend on external Haskell libraries, run it as `ghci relalg.hs`.
+Tested under GHC 8.0.1, should run under 7.8 and newer.
 
 ### Supported Operations
 
